@@ -39,10 +39,10 @@ public class RecipesRepository
     {
         string sql = @"
         SELECT
-    recipes.*,
-    creator.*
-FROM recipes
-    JOIN accounts creator ON creator.id = recipes.creatorId;";
+        recipes.*,
+        creator.*
+        FROM recipes
+        JOIN accounts creator ON creator.id = recipes.creatorId;";
         List<Recipe> recipes = _db.Query<Recipe, Account, Recipe>(sql, (recipe, creator) =>
         {
             recipe.Creator = creator;
@@ -51,11 +51,20 @@ FROM recipes
         return recipes;
     }
 
-    internal Recipe GetOne(int recipeId)
+    public Recipe GetOne(int id)
     {
-        string sql = "SELECT * FROM recipes WHERE id = @recipeId;";
-
-        Recipe recipe = _db.Query<Recipe>(sql, new { recipeId }).FirstOrDefault();
+        string sql = @"
+        SELECT 
+        recipes.*,
+        creator.*
+        FROM recipes 
+        JOIN accounts creator ON creator.id = recipes.creatorId
+        WHERE recipes.id = @id;";
+        Recipe recipe = _db.Query<Recipe, Account, Recipe>(sql, (recipe, creator) =>
+        {
+            recipe.Creator = creator;
+            return recipe;
+        }, new { id }).FirstOrDefault();
         return recipe;
     }
 }

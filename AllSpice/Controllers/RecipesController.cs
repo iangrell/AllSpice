@@ -44,12 +44,12 @@ public class RecipesController : ControllerBase
         }
     }
 
-    [HttpGet("{recipeId}")]
-    public ActionResult<Recipe> GetOne(int recipeId)
+    [HttpGet("{recipesId}")]
+    public ActionResult<Recipe> GetOne(int recipesId)
     {
         try
         {
-            Recipe recipe = _recipesService.GetOne(recipeId);
+            Recipe recipe = _recipesService.GetOne(recipesId);
             return Ok(recipe);
         }
         catch (Exception e)

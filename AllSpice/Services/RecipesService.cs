@@ -16,13 +16,10 @@ public class RecipesService
         return recipe;
     }
 
-    internal Recipe GetOne(int recipeId)
+    internal Recipe GetOne(int recipesId)
     {
-        Recipe recipe = _repo.GetOne(recipeId);
-        if (recipe == null)
-        {
-            throw new Exception("No recipe found with that ID");
-        }
+        Recipe recipe = _repo.GetOne(recipesId);
+        if (recipe == null) throw new Exception("No recipe found with that ID");
         return recipe;
     }
 
