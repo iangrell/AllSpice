@@ -11,7 +11,8 @@ public class RecipesService
 
     internal Recipe CreateRecipe(Recipe recipeData)
     {
-        Recipe recipe = _repo.CreateRecipe(recipeData);
+        int id = _repo.CreateRecipe(recipeData);
+        Recipe recipe = this.GetOne(id);
         return recipe;
     }
 

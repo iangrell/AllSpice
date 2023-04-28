@@ -41,7 +41,6 @@ public class RecipesController : ControllerBase
         catch (Exception e)
         {
             return BadRequest(e.Message);
-            throw;
         }
     }
 

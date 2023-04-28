@@ -20,31 +20,27 @@ public class RecipesRepository
         category,
         creatorId
     )
-    VALUES(
+    values(
         @Title, 
         @Instructions, 
         @Img, 
         @Category,
         @CreatorId
     );
-    SELECT LAST_INSERT _ID();";
+    SELECT LAST_INSERT_ID();";
 
         int id = _db.ExecuteScalar<int>(sql, recipeData);
         recipeData.Id = id;
 
-        return recipe;
+        return id;
     }
 
-    internal List<Recipe> Get()
+    public List<Recipe> Get()
     {
         string sql = @"
         SELECT
-    recipes.id,
-    recipes.title,
-    recipes.instructions,
-    recipes.img,
-    recipes.category,
-    creator.name
+    recipes.*,
+    creator.*
 FROM recipes
     JOIN accounts creator ON creator.id = recipes.creatorId;";
         List<Recipe> recipes = _db.Query<Recipe, Account, Recipe>(sql, (recipe, creator) =>
