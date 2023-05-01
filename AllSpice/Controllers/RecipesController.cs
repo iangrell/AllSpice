@@ -44,13 +44,44 @@ public class RecipesController : ControllerBase
         }
     }
 
-    [HttpGet("{recipesId}")]
-    public ActionResult<Recipe> GetOne(int recipesId)
+    [HttpGet("{recipeId}")]
+    public ActionResult<Recipe> GetOne(int recipeId)
     {
         try
         {
-            Recipe recipe = _recipesService.GetOne(recipesId);
+            Recipe recipe = _recipesService.GetOne(recipeId);
             return Ok(recipe);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+    [HttpPut("{recipeId}")]
+    public async Task<ActionResult<Recipe>> EditRecipe([FromBody] Recipe recipeData, int recipeId)
+    {
+        try
+        {
+            Account userInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
+            recipeData.CreatorId = userInfo.Id;
+            Recipe recipe = _recipesService.EditRecipe(recipeData, recipeId);
+            return Ok(recipe);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+    [HttpDelete("{recipeId}")]
+    public async Task<ActionResult<string>> Remove(int recipeId)
+    {
+        try
+        {
+            Account userInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
+            string message = _recipesService.Remove(recipeId, userInfo.Id);
+            return Ok(message);
         }
         catch (Exception e)
         {
