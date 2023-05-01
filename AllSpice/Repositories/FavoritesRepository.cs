@@ -45,4 +45,17 @@ public class FavoritesRepository
         }, new { userId }).ToList();
         return recipes;
     }
+
+    internal Favorite GetOne(int id)
+    {
+        string sql = "SELECT * FROM favorites WHERE id = @id;";
+        Favorite favorite = _db.Query<Favorite>(sql, new { id }).FirstOrDefault();
+        return favorite;
+    }
+
+    internal void RemoveFavorite(int favoriteId)
+    {
+        string sql = "DELETE FROM favorites WHERE id = @favoriteId;";
+        _db.Execute(sql, new { favoriteId });
+    }
 }
